@@ -3,14 +3,13 @@ name: Yahoo News (JMS/Mobility Show) Scraper
 on:
   workflow_dispatch:
   schedule:
-    # 1時間ごとに実行（JST換算で毎時）
-    - cron: '0 * * * *'
+    - cron: '0 * * * *'  # 1時間ごと（JSTでは毎時+9h）
 
 jobs:
   run:
     runs-on: ubuntu-latest
     env:
-      SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}   # 例: 1-oJl5lnTC2FRqayHsPW1ZVqfktAE99PCK6HGmKHiR28
+      SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
       GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
     steps:
       - name: Checkout
@@ -21,7 +20,7 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install system deps (Chrome)
+      - name: Install Chrome
         run: |
           sudo apt-get update
           sudo apt-get install -y wget gnupg unzip
@@ -32,9 +31,7 @@ jobs:
 
       - name: Install Python deps
         run: |
-          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run scraper
-        run: |
-          python integrated_main.py
+        run: python integrated_main.py
