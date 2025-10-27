@@ -3,14 +3,14 @@ name: Yahoo News (JMS/Mobility Show) Scraper
 on:
   workflow_dispatch:
   schedule:
-    # 毎日 07:00 JST に実行（＝22:00 UTC）
-    - cron: '0 22 * * *'
+    # 1時間ごとに実行（JST換算で毎時）
+    - cron: '0 * * * *'
 
 jobs:
   run:
     runs-on: ubuntu-latest
     env:
-      SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}   # ← ここにIDをSecrets登録
+      SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}   # 例: 1-oJl5lnTC2FRqayHsPW1ZVqfktAE99PCK6HGmKHiR28
       GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
     steps:
       - name: Checkout
